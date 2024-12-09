@@ -1,0 +1,486 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+
+<div class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="container">
+        <div class="row m-1 mt-3">
+          <div class="column-header">
+            <a [routerLink]="['']">
+              <button type="button" class="btn btn-danger">Close</button>
+            </a>
+            <h1 *ngIf="transactionDetails?.fullName">
+              {{ transactionDetails.fullName.firstName }}
+              {{ transactionDetails.fullName.lastName }}
+            </h1>
+          </div>
+          <mat-tab-group mat-stretch-tabs="true">
+            <mat-tab label="Personal Profile">
+              <ng-template mat-tab-label>
+                <i class="bi bi-person-fill"></i> Personal Profile
+              </ng-template>
+              <ng-container
+                *ngTemplateOutlet="personalProfileTab"
+              ></ng-container>
+            </mat-tab>
+            <mat-tab label="Education">
+              <ng-template mat-tab-label>
+                <i class="bi bi-book"></i> Education
+              </ng-template>
+              <ng-container *ngTemplateOutlet="educationTab"></ng-container>
+            </mat-tab>
+            <mat-tab label="Ordination">
+              <ng-template mat-tab-label>
+                <i class="bi bi-book"></i> Ordination
+              </ng-template>
+              <ng-container
+                *ngTemplateOutlet="admissionInstallationTab"
+              ></ng-container>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #personalProfileTab>
+  <mat-accordion multi class="profile-container">
+    <div class="personal-profile-container tab-content" id="print-section">
+      <button type="button" class="btn btn-sm btn-primary">Edit</button>
+      <div class="row" *ngIf="transactionDetails">
+        <!-- Full Name -->
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              formControlName="firstName"
+              value="{{ transactionDetails.fullName.firstName }}"
+              required
+            />
+            <label for="firstName">First Name</label>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="middleName"
+              formControlName="middleName"
+              value="{{ transactionDetails.fullName.middleName }}"
+            />
+            <label for="middleName">Middle Name</label>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              formControlName="lastName"
+              value="{{ transactionDetails.fullName.lastName }}"
+              required
+            />
+            <label for="lastName">Last Name</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="suffix"
+              formControlName="suffix"
+              value="{{ transactionDetails.fullName.suffix }}"
+            />
+            <label for="suffix">Suffix</label>
+          </div>
+        </div>
+
+        <!-- Date and Place of Birth -->
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <input
+              type="date"
+              class="form-control"
+              id="dateOfBirth"
+              formControlName="dateOfBirth"
+              value="{{ transactionDetails.dateOfBirth }}"
+              required
+            />
+            <label for="dateOfBirth">Date of Birth</label>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="placeOfBirth"
+              formControlName="placeOfBirth"
+              value="{{ transactionDetails.placeOfBirth }}"
+              required
+            />
+            <label for="placeOfBirth">Place of Birth</label>
+          </div>
+        </div>
+
+        <!-- Current Assignment and Diocese -->
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="currentAssignment"
+              formControlName="currentAssignment"
+              value="{{ transactionDetails.currentAssignment }}"
+              required
+            />
+            <label for="currentAssignment">Current Assignment</label>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="currentDiocese"
+              formControlName="currentDiocese"
+              value="{{ transactionDetails.currentDiocese }}"
+              required
+            />
+            <label for="currentDiocese">Current Diocese</label>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="originalDiocese"
+              formControlName="originalDiocese"
+              value="{{ transactionDetails.originalDiocese }}"
+              required
+            />
+            <label for="originalDiocese">Original Diocese</label>
+          </div>
+        </div>
+
+        <!-- Nickname and Status -->
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="nickname"
+              formControlName="nickname"
+              value="{{ transactionDetails.nickname }}"
+            />
+            <label for="nickname">Nickname</label>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-floating">
+            <select class="form-control" formControlName="status">
+              <option
+                [selected]="transactionDetails.status === 'Active'"
+                value="Active"
+              >
+                Active
+              </option>
+              <option
+                [selected]="transactionDetails.status === 'Retired'"
+                value="Retired"
+              >
+                Retired
+              </option>
+            </select>
+            <label for="status">Status</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parents' Names -->
+      <div class="row" *ngIf="transactionDetails?.familyDetails">
+        <!-- Father's Name -->
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="fatherName"
+              formControlName="fatherName"
+              [value]="transactionDetails.familyDetails.fatherName || ''"
+              required
+            />
+            <label for="fatherName">Name of Father</label>
+          </div>
+        </div>
+        <!-- Mother's Maiden Name -->
+        <div class="col-sm-3">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="motherName"
+              formControlName="motherMaidenName"
+              [value]="transactionDetails.familyDetails.motherMaidenName || ''"
+              required
+            />
+            <label for="motherName">Maiden Name of Mother</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-accordion>
+</ng-template>
+
+<ng-template #educationTab>
+  <mat-accordion multi class="education-container">
+    <!-- Add Education Button -->
+    <div class="d-flex mb-2">
+      <button
+        class="btn btn-sm btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#educationModal"
+      >
+        Add
+      </button>
+    </div>
+
+    <!-- Education Table -->
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Type</th>
+          <th>School Name</th>
+          <th>Degree</th>
+          <th>Years</th>
+          <th class="table-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="transactionDetails?.educationalBackground">
+        <!-- Elementary Education -->
+        <tr>
+          <td>Completed</td>
+          <td>Elementary</td>
+          <td>
+            {{ transactionDetails.educationalBackground.elementary.schoolName }}
+          </td>
+          <td>N/A</td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.elementary.inclusiveYears
+            }}
+          </td>
+          <td class="table-actions">
+            <a
+              class="btn btn-success btn-sm"
+              [routerLink]="['/educationview', 'elementary']"
+            >
+              <i class="fa fa-search-plus"></i> View
+            </a>
+          </td>
+        </tr>
+        <!-- High School Education -->
+        <tr>
+          <td>Completed</td>
+          <td>High School</td>
+          <td>
+            {{ transactionDetails.educationalBackground.highSchool.schoolName }}
+          </td>
+          <td>N/A</td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.highSchool.inclusiveYears
+            }}
+          </td>
+          <td class="table-actions">
+            <a
+              class="btn btn-success btn-sm"
+              [routerLink]="['/educationview', 'highSchool']"
+            >
+              <i class="fa fa-search-plus"></i> View
+            </a>
+          </td>
+        </tr>
+        <!-- Pre-College Education -->
+        <tr>
+          <td>Completed</td>
+          <td>Pre-College</td>
+          <td>
+            {{ transactionDetails.educationalBackground.preCollege.schoolName }}
+          </td>
+          <td>N/A</td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.preCollege.inclusiveYears
+            }}
+          </td>
+          <td class="table-actions">
+            <a
+              class="btn btn-success btn-sm"
+              [routerLink]="['/educationview', 'preCollege']"
+            >
+              <i class="fa fa-search-plus"></i> View
+            </a>
+          </td>
+        </tr>
+        <!-- College Education -->
+        <tr>
+          <td>Completed</td>
+          <td>College</td>
+          <td>
+            {{ transactionDetails?.educationalBackground?.college?.schoolName }}
+          </td>
+
+          <td>
+            {{
+              transactionDetails.educationalBackground.college.honorsAwards ||
+                "N/A"
+            }}
+          </td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.college.inclusiveYears
+            }}
+          </td>
+          <td class="table-actions">
+            <a
+              class="btn btn-success btn-sm"
+              [routerLink]="['/educationview', 'college']"
+            >
+              <i class="fa fa-search-plus"></i> View
+            </a>
+          </td>
+        </tr>
+        <!-- Ecclesiastical Degrees -->
+        <tr>
+          <td>Completed</td>
+          <td>Ecclesiastical</td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.seminaryFormation
+                .nameAddress
+            }}
+          </td>
+          <td>
+            {{
+              transactionDetails.educationalBackground.seminaryFormation
+                .philosophy
+                ? "Philosophy"
+                : ""
+            }}
+            {{
+              transactionDetails.educationalBackground.seminaryFormation
+                .theology
+                ? "Theology"
+                : ""
+            }}
+          </td>
+          <td>N/A</td>
+          <td class="table-actions">
+            <a
+              class="btn btn-success btn-sm"
+              [routerLink]="['/educationview', 'seminaryFormation']"
+            >
+              <i class="fa fa-search-plus"></i> View
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-accordion>
+</ng-template>
+
+<ng-template #admissionInstallationTab>
+  <mat-accordion multi>
+    <!-- Ordination Section -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="table-title">Ordination</div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="tab-content">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Ordaining Prelate</th>
+              <th>Date of Ordination</th>
+              <th>Age Ordained</th>
+              <th>Place of Ordination</th>
+              <th>Diocese</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="transactionDetails">
+              <td class="col-sm-2">{{ transactionDetails.type }}</td>
+              <td class="col-sm-2">
+                <input
+                  type="text"
+                  [(ngModel)]="
+                    transactionDetails.ordinationDetails.ordainingPrelate
+                  "
+                  [readonly]="!isEditable"
+                  class="form-control col-sm-3"
+                  placeholder="Ordaining Prelate"
+                />
+              </td>
+              <td class="col-sm-2">
+                <input
+                  type="date"
+                  [(ngModel)]="
+                    transactionDetails.ordinationDetails.dateOfOrdination
+                  "
+                  class="form-control col-sm-3"
+                  [readonly]="!isEditable"
+                />
+              </td>
+              <td class="col-sm-1">
+                <input
+                  type="text"
+                  [(ngModel)]="transactionDetails.ageordinaed"
+                  class="form-control col-sm-3"
+                  [readonly]="!isEditable"
+                />
+              </td>
+              <td class="col-sm-2">
+                <input
+                  type="text"
+                  [(ngModel)]="
+                    transactionDetails.ordinationDetails.placeOfOrdination
+                  "
+                  class="form-control col-sm-3"
+                  [readonly]="!isEditable"
+                  placeholder="Place of Ordination"
+                />
+              </td>
+              <td class="col-sm-2">
+                <input
+                  type="text"
+                  [(ngModel)]="transactionDetails.ordinationDetails.diocese"
+                  class="form-control col-sm-3"
+                  [readonly]="!isEditable"
+                  placeholder="Diocese"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button (click)="toggleEdit()" class="btn btn-primary btn-sm">
+          {{ isEditable ? "Save" : "Edit" }}
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</ng-template>
